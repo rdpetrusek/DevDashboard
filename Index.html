@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+    <title>Dev Dashboard</title>
+    <script type="text/x-template" id="nav-item-template">
+        <div class="row nav-item"  v-on:click="showIntegrities" v-bind:class="{'selected': is_integrities_active}">
+            <h6 class="nav-content" >Integrities</h6>                    
+        </div>
+    </script>
+  </head>
+  <body>
+    <div id="app" v-cloak="true">
+        <div class="container main-content">
+            <div class="row">
+                <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+                        <div class="row">
+                    <div class="col-lg-12 side-menu col-sm-4 col-md-4">
+                        <div class="row nav-item"  v-on:click="showIntegrities" v-bind:class="{'selected': is_integrities_active}">
+                            <h6 class="nav-content" >Integrities</h6>                    
+                        </div>
+                        <div class="row nav-item" v-on:click="showServices" v-bind:class="{'selected': is_services_active}">
+                            <h6 class="nav-content">Services</h6>                        
+                        </div>
+                        <div class="row nav-item"  v-on:click="showAvailability" v-bind:class="{'selected': is_availability_active}">
+                            <h6 class="nav-content">Availability</h6>                        
+                        </div>
+                        <div class="row nav-item"  v-on:click="showQueues" v-bind:class="{'selected': is_queues_active}">
+                            <h6 class="nav-content">Queues</h6>                        
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-sm-8 col-md-8">
+                        <div v-if="is_integrities_active">
+                            <div class="form-group">
+                                <label for="sel1">Severity:</label>
+                                <select class="form-control" id="severities-select-list" v-model="integrities_severity_filter">
+                                    <option selected>all</option>
+                                    <option v-for="item in integrities_severities">{{ item }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="sel1">Subsystem:</label>
+                                <select class="form-control" id="subsystem-select-list" v-model="integrities_subsystem_filter">
+                                    <option selected>all</option>
+                                    <option v-for="item in integrities_subsystems">{{ item }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div v-if="is_services_active">
+                            filter services
+                        </div>
+                        <div v-if="is_availability_active">
+                            filter availability
+                        </div>
+                        <div v-if="is_queues_active">
+                            filter integrities
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                    <div v-show="is_integrities_active">
+                        <h2>Integrities</h2>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                <tr>
+                                    <th>Severity</th>
+                                    <th>Subsystem</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="item in sorted_filtered_integrities" v-bind:class="{ 'severity-critical' : item.IsCritical, 'severity-high': item.IsHigh, 'severity-medium': item.IsMedium, 'severity-success': item.IsSuccessful}">
+                                        <td>{{ item.severity }}</td>                                           
+                                        <td>{{ item.subsystem }}</td>                         
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.description }}</td>                                      
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div v-show="is_services_active">
+                        <h2>Service Statuses</h2>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-sm">
+                                <thead>
+                                <tr>
+                                    <th>Service Name</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="item in services">
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.status }}</td>                                           
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div v-show="is_queues_active">
+                        <h2>Queue Message Counts</h2>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-sm">
+                                <thead>
+                                <tr>
+                                    <th>Queue Name</th>
+                                    <th>Message Count</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="item in queues">
+                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.count }}</td>                                           
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- app js-->
+    <script src="app.js"></script>
+  </body>
+</html>
