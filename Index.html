@@ -8,127 +8,57 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="integrities-panel.css">
+    
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 
     <title>Dev Dashboard</title>
-    <script type="text/x-template" id="nav-item-template">
-        <div class="row nav-item"  v-on:click="showIntegrities" v-bind:class="{'selected': is_integrities_active}">
-            <h6 class="nav-content" >Integrities</h6>                    
-        </div>
-    </script>
   </head>
   <body>
     <div id="app" v-cloak="true">
-        <div class="container main-content">
-            <div class="row">
-                <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
-                        <div class="row">
-                    <div class="col-lg-12 side-menu col-sm-4 col-md-4">
-                        <div class="row nav-item"  v-on:click="showIntegrities" v-bind:class="{'selected': is_integrities_active}">
-                            <h6 class="nav-content" >Integrities</h6>                    
-                        </div>
-                        <div class="row nav-item" v-on:click="showServices" v-bind:class="{'selected': is_services_active}">
-                            <h6 class="nav-content">Services</h6>                        
-                        </div>
-                        <div class="row nav-item"  v-on:click="showAvailability" v-bind:class="{'selected': is_availability_active}">
-                            <h6 class="nav-content">Availability</h6>                        
-                        </div>
-                        <div class="row nav-item"  v-on:click="showQueues" v-bind:class="{'selected': is_queues_active}">
-                            <h6 class="nav-content">Queues</h6>                        
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-sm-8 col-md-8">
-                        <div v-if="is_integrities_active">
-                            <div class="form-group">
-                                <label for="sel1">Severity:</label>
-                                <select class="form-control" id="severities-select-list" v-model="integrities_severity_filter">
-                                    <option selected>all</option>
-                                    <option v-for="item in integrities_severities">{{ item }}</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="sel1">Subsystem:</label>
-                                <select class="form-control" id="subsystem-select-list" v-model="integrities_subsystem_filter">
-                                    <option selected>all</option>
-                                    <option v-for="item in integrities_subsystems">{{ item }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div v-if="is_services_active">
-                            filter services
-                        </div>
-                        <div v-if="is_availability_active">
-                            filter availability
-                        </div>
-                        <div v-if="is_queues_active">
-                            filter integrities
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="col-lg-10">
-                    <div v-show="is_integrities_active">
-                        <h2>Integrities</h2>
-                        <div class="table-responsive">
-                            <table class="table table-sm">
-                                <thead>
-                                <tr>
-                                    <th>Severity</th>
-                                    <th>Subsystem</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="item in sorted_filtered_integrities" v-bind:class="{ 'severity-critical' : item.IsCritical, 'severity-high': item.IsHigh, 'severity-medium': item.IsMedium, 'severity-success': item.IsSuccessful}">
-                                        <td>{{ item.severity }}</td>                                           
-                                        <td>{{ item.subsystem }}</td>                         
-                                        <td>{{ item.name }}</td>
-                                        <td>{{ item.description }}</td>                                      
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div v-show="is_services_active">
-                        <h2>Service Statuses</h2>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-sm">
-                                <thead>
-                                <tr>
-                                    <th>Service Name</th>
-                                    <th>Status</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="item in services">
-                                        <td>{{ item.name }}</td>
-                                        <td>{{ item.status }}</td>                                           
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div v-show="is_queues_active">
-                        <h2>Queue Message Counts</h2>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-sm">
-                                <thead>
-                                <tr>
-                                    <th>Queue Name</th>
-                                    <th>Message Count</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="item in queues">
-                                        <td>{{ item.name }}</td>
-                                        <td>{{ item.count }}</td>                                           
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+        <nav id="sidebar" v-bind:class="{ collapsed: is_nav_collapsed }">
+            <div class="nav-line expand-collapse-button" v-on:click="toggle_nav">
+                <span v-show="is_nav_expanded">
+                    <i class="collapse-button fas fa-angle-double-left"></i>
+                </span>
+                <span class="nav-icon" v-show="is_nav_collapsed">
+                    <i class="expand-button fas fa-angle-double-right" ></i>
+                </span>
+            </div>
+            <ul class="list-unstyled components">
+                <li class="nav-line">
+                    <span class="nav-icon" v-show="is_nav_collapsed">
+                        <i class="fas fa-home"></i>
+                    </span>
+                    <span class="nav-title" v-show="is_nav_expanded">Home</span>
+                </li>
+                <li class="nav-line" v-on:click="showIntegrities">
+                    <span class="nav-icon" v-show="is_nav_collapsed">I</span>
+                    <span class="nav-title" v-show="is_nav_expanded">Integrities</span>
+                </li>
+                <li class="nav-line" v-on:click="showServices">
+                    <span class="nav-icon" v-show="is_nav_collapsed">S</span>
+                    <span class="nav-title" v-show="is_nav_expanded">Services</span>
+                </li>
+                <li class="nav-line" v-on:click="showAvailability">
+                    <span class="nav-icon" v-show="is_nav_collapsed">A</span>
+                    <span class="nav-title" v-show="is_nav_expanded">Availability</span>
+                </li>
+                <li class="nav-line" v-on:click="showQueues">
+                    <span class="nav-icon" v-show="is_nav_collapsed">Q</span>
+                    <span class="nav-title" v-show="is_nav_expanded">Queues</span>
+                </li>
+            </ul>
+        </nav>
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <integrities v-show="is_integrities_active"></integrities>
+                    <services v-show="is_services_active"></services>
+                    <queues v-show="is_queues_active"></queues>
                 </div>
             </div>
         </div>
@@ -138,8 +68,13 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js" integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c" crossorigin="anonymous"></script>
     <!-- app js-->
+    
+    <script src="integrities-panel.js"></script>
+    <script src="services-panel.js"></script>
+    <script src="queues-panel.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

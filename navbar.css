@@ -1,0 +1,58 @@
+
+@import url('https://fonts.googleapis.com/css?family=Cabin:300');
+
+#sidebar {
+    background: rgb(58, 70, 119);
+    color: #fff;
+    min-width: 150px;
+    max-width: 150px;
+    height: 100vh;
+}
+#sidebar > ul{
+    margin-top: 25px;
+}
+#sidebar.collapsed {
+    max-width: 40px !important;
+    min-width: 40px !important;
+}
+
+#sidebr.collapsed > * {
+    text-align: center;
+}
+.nav-icon {
+    font-family: 'Cabin', sans-serif;
+    min-width: 25px;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 2.0em;
+    display: block;
+    text-align: center;
+
+}
+
+.expand-collapse-button {
+    background: rgb(163, 180, 248);
+}
+
+.active > .nav-icon {
+    display: none;
+}
+
+.nav-title {
+    font-family: 'Cabin', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 2.0em;
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.collapse-button {
+    height: 25px;
+    margin-left: 120px;
+}
+
+.nav-line:hover {
+    background: rgb(98, 118, 201);
+    cursor: pointer;
+}
