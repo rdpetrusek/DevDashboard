@@ -18,8 +18,15 @@
     <title>Dev Dashboard</title>
   </head>
   <body>
+      <div id="whole-app">
+    <div class="d-sm-none mobile-nav" v-show="is_nav_expanded">
+        mobile nav
+    </div>
+    <div class="d-sm-none d-block">
+        <i class="fas fa-bars hamburger-mobile"></i>
+    </div>
     <div id="app" v-cloak="true">
-        <nav id="sidebar" v-bind:class="{ collapsed: is_nav_collapsed }">
+        <nav id="sidebar" class="d-sm-table-cell d-none" v-bind:class="{ collapsed: is_nav_collapsed }">
             <div class="nav-line expand-collapse-button" v-on:click="toggle_nav">
                 <span v-show="is_nav_expanded">
                     <i class="collapse-button fas fa-angle-double-left"></i>
@@ -63,6 +70,7 @@
             </div>
         </div>
     </div>
+</div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -76,5 +84,6 @@
     <script src="services-panel.js"></script>
     <script src="queues-panel.js"></script>
     <script src="app.js"></script>
+
   </body>
 </html>

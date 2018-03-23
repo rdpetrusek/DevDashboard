@@ -24,7 +24,7 @@ Vue.component("integrities", {
                 <tr>
                     <th class="d-md-table-cell d-none">Severity</th>
                     <th class="d-lg-table-cell d-none">Subsystem</th>
-                    <th>Name</th>
+                    <th class="d-md-table-cell d-none">Name</th>
                     <th>Description</th>
                 </tr>
                 </thead>
@@ -32,7 +32,7 @@ Vue.component("integrities", {
                     <tr v-for="item in sorted_filtered" v-bind:class="{ 'severity-critical' : item.IsCritical, 'severity-high': item.IsHigh, 'severity-medium': item.IsMedium, 'severity-success': item.IsSuccessful}">
                         <td class="d-md-table-cell d-none">{{ item.severity }}</td>                                           
                         <td class="d-lg-table-cell d-none">{{ item.subsystem }}</td>                         
-                        <td>{{ item.name }}</td>
+                        <td class="d-md-table-cell d-none">{{ item.name }}</td>
                         <td>{{ item.description }}</td>                                      
                     </tr>
                 </tbody>
@@ -45,7 +45,7 @@ Vue.component("integrities", {
         severity_filter: "all",
         subsystem_filter: "all",
         integrities:[
-            new Integrity("Showcase Price", "website", "", "success"),
+            new Integrity("Showcase Price", "website", "Showcase prices are up to date", "success"),
             new Integrity("Showcase Missing", "website", "9000+ missing showcases", "high"),
             new Integrity("Website is down", "website", "www.davidweekleyhomes.com is unavailable", "critical"),
             new Integrity("Showcase Media Missing", "website", "100,000 missing pictures", "medium")

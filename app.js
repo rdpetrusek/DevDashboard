@@ -1,7 +1,7 @@
 'use strict';
 
 var app = new Vue({
-    el: '#app',
+    el: '#whole-app',
     data:{
         active_tab: "integrities",
         nav_collapsed: false
