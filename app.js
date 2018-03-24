@@ -19,6 +19,22 @@ var app = new Vue({
         showQueues: function(){
             this.active_tab = "queues";
         },
+        showIntegritiesAndClose: function(){
+            this.showIntegrities();
+            this.nav_collapsed = true;
+        },
+        showServicesAndClose: function(){
+            this.showServices();
+            this.nav_collapsed = true;
+        },
+        showAvailabilityAndClose: function(){
+            this.showAvailability();
+            this.nav_collapsed = true;
+        },
+        showQueuesAndClose: function(){
+            this.showQueues();
+            this.nav_collapsed = true;
+        },
         toggle_nav: function(event){
             if(this.nav_collapsed === true)
                 this.nav_collapsed = false;

@@ -19,58 +19,65 @@
   </head>
   <body>
       <div id="whole-app">
-    <div class="d-sm-none mobile-nav" v-show="is_nav_expanded">
-        mobile nav
-    </div>
-    <div class="d-sm-none d-block">
-        <i class="fas fa-bars hamburger-mobile"></i>
-    </div>
-    <div id="app" v-cloak="true">
-        <nav id="sidebar" class="d-sm-table-cell d-none" v-bind:class="{ collapsed: is_nav_collapsed }">
-            <div class="nav-line expand-collapse-button" v-on:click="toggle_nav">
-                <span v-show="is_nav_expanded">
-                    <i class="collapse-button fas fa-angle-double-left"></i>
-                </span>
-                <span class="nav-icon" v-show="is_nav_collapsed">
-                    <i class="expand-button fas fa-angle-double-right" ></i>
-                </span>
-            </div>
+        <div class="d-sm-none mobile-nav" v-show="is_nav_expanded">
             <ul class="list-unstyled components">
-                <li class="nav-line">
-                    <span class="nav-icon" v-show="is_nav_collapsed">
-                        <i class="fas fa-home"></i>
-                    </span>
-                    <span class="nav-title" v-show="is_nav_expanded">Home</span>
-                </li>
-                <li class="nav-line" v-on:click="showIntegrities">
-                    <span class="nav-icon" v-show="is_nav_collapsed">I</span>
+                <li class="nav-line" v-on:click="showIntegritiesAndClose">
                     <span class="nav-title" v-show="is_nav_expanded">Integrities</span>
                 </li>
-                <li class="nav-line" v-on:click="showServices">
-                    <span class="nav-icon" v-show="is_nav_collapsed">S</span>
+                <li class="nav-line" v-on:click="showServicesAndClose">
                     <span class="nav-title" v-show="is_nav_expanded">Services</span>
                 </li>
-                <li class="nav-line" v-on:click="showAvailability">
-                    <span class="nav-icon" v-show="is_nav_collapsed">A</span>
+                <li class="nav-line" v-on:click="showAvailabilityAndClose">
                     <span class="nav-title" v-show="is_nav_expanded">Availability</span>
                 </li>
-                <li class="nav-line" v-on:click="showQueues">
-                    <span class="nav-icon" v-show="is_nav_collapsed">Q</span>
+                <li class="nav-line" v-on:click="showQueuesAndClose">
                     <span class="nav-title" v-show="is_nav_expanded">Queues</span>
                 </li>
             </ul>
-        </nav>
-        <div class="main-content">
-            <div class="container-fluid">
-                <div class="row">
-                    <integrities v-show="is_integrities_active"></integrities>
-                    <services v-show="is_services_active"></services>
-                    <queues v-show="is_queues_active"></queues>
+        </div>
+        <div class="d-sm-none d-block hamburger-mobile" v-on:click="toggle_nav">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div id="app" v-cloak="true">
+            <nav id="sidebar" class="d-sm-table-cell d-none" v-bind:class="{ collapsed: is_nav_collapsed }">
+                <div class="nav-line expand-collapse-button" v-on:click="toggle_nav">
+                    <span v-show="is_nav_expanded">
+                        <i class="collapse-button fas fa-angle-double-left"></i>
+                    </span>
+                    <span class="nav-icon" v-show="is_nav_collapsed">
+                        <i class="expand-button fas fa-angle-double-right" ></i>
+                    </span>
+                </div>
+                <ul class="list-unstyled components">
+                    <li class="nav-line" v-on:click="showIntegrities">
+                        <span class="nav-icon" v-show="is_nav_collapsed">I</span>
+                        <span class="nav-title" v-show="is_nav_expanded">Integrities</span>
+                    </li>
+                    <li class="nav-line" v-on:click="showServices">
+                        <span class="nav-icon" v-show="is_nav_collapsed">S</span>
+                        <span class="nav-title" v-show="is_nav_expanded">Services</span>
+                    </li>
+                    <li class="nav-line" v-on:click="showAvailability">
+                        <span class="nav-icon" v-show="is_nav_collapsed">A</span>
+                        <span class="nav-title" v-show="is_nav_expanded">Availability</span>
+                    </li>
+                    <li class="nav-line" v-on:click="showQueues">
+                        <span class="nav-icon" v-show="is_nav_collapsed">Q</span>
+                        <span class="nav-title" v-show="is_nav_expanded">Queues</span>
+                    </li>
+                </ul>
+            </nav>
+            <div class="main-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <integrities v-show="is_integrities_active"></integrities>
+                        <services v-show="is_services_active"></services>
+                        <queues v-show="is_queues_active"></queues>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
